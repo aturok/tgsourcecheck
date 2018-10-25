@@ -349,9 +349,16 @@ public final class Example {
     }
 
     private static class UpdatesHandler implements Client.ResultHandler {
+        private void handleNewMessage(TdApi.UpdateNewMessage updateInfo) {
+            System.out.println(updateInfo.message.content.toString());
+        }
+
         @Override
         public void onResult(TdApi.Object object) {
             switch (object.getConstructor()) {
+                case TdApi.UpdateNewMessage.CONSTRUCTOR:
+                    handleNewMessage(((TdApi.UpdateNewMessage) object));
+                    break;
                 case TdApi.UpdateAuthorizationState.CONSTRUCTOR:
                     onAuthorizationStateUpdated(((TdApi.UpdateAuthorizationState) object).authorizationState);
                     break;
